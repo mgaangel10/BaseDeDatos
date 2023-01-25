@@ -1,3 +1,5 @@
+13:15 25/01/2023
+
 --seleccionar el numero de empleados que trabaja en cada pais 
 --que trabaja en cada pais no este en la region de Asia
 
@@ -35,10 +37,87 @@ group by country_name
 having count (employee_id)>5
 having max(salary) > 10000;
 
+---lo mismo pero con ciudad
+
+select country_name,city, count(employee_id),AVG(salary)
+from employees join departments using (department_id)
+join locations using (location_id)
+join countries using (country_id)
+join regions using (region_id)
+where region_name != 'Asia'
+group by country_name,city
+having count (employee_id)>5
+having max(salary) > 10000;
+
+
 ********************************************************************
 *LAS CONDICIONES DEL HAVING SOLO DEBE APARECER ESTO : COUNT ,SUM ,MAX,MIN,AVG."solo estas 5"
 PERO NUNCA UNA CONDICION POR EJMPLO: having country_name != 'united Kindog'*
 *este ejemplo se deberia poner en el where*
 en select se pone solo que queremos que se muestre
 ***********************************************************************
+
+
+BASE DE DATOS DE CLIMATOLOGIA
+-----------------------------
+--seleccionar la precipitacion media del mes de marzo agrupado por estacion 
+
+select estacion,provincia ,avg(precipitacion_total)
+from climatologia
+where extract(month from fecha)=3
+group by estacion,provincia;
+
+--seleccionar la emdia de la temperatura media agrupando por provincia y mes .
+-- ordena los resultados
+--por provincia asc y cronologicamente (enero,febrero...)
+
+select to_char(fecha,'TMMonth')as "mes"*, avg(temperatura_media),provincia
+from climatologia 
+group by fecha,provincia,to_char(fecha,'TMMonth')
+order by provincia,mes ;
+*esas comillas son un alias
+
+--selecionar el numero de vuelos que salen en media 
+--cada dia de la semana (lun mart)
+--agrupando por aeroperto de salida
+
+select ciudad,to_char(salida,'TMDay')as"dia",
+count(*)
+from vuelo vu join aeropuerto ar on (vu.desde=ar.id_aeropuerto)
+group by ciudad,to_char(salida,'TMDay')
+order by ciudad,dia ;
+
+*PARA ESTE EJERCICIO HABIA QUE HACER UNA SUBCONSULTA ¡. EL EJERCICIO QUEDARIA ASI *
+select ciudad,to_char(salida,'TMDay')as"dia",
+count(*)
+from vuelo vu join aeropuerto ar on (vu.desde=ar.id_aeropuerto)
+group by ciudad,to_char(salida,'TMDay')
+order by ciudad,dia ;
+
+select ciudad ,avg(numval)
+from(select ciudad,to_char(salida,'TMDay')as"dia",
+count(*)as "numval"
+from vuelo vu join aeropuerto ar on (vu.desde=ar.id_aeropuerto)
+group by ciudad,to_char(salida,'TMDay')
+order by ciudad,dia )datos
+group by ciudad;
+
+--SELCIBNAR EL SALARIO MEDIO MAXIMO AGRUPANDO POR DEPARTMANETO
+--yo solito:)
+
+select max(numval)
+from(SELECT department_name, avg(salary) as "numval"
+from employees join departments using (department_id)
+group by department_name)d;
+
+--sacar el nombre del departamento del que su media haya sido el maximo
+*en este caso no hace falta hacer subconsulta*
+********este ejemplo es uno de lso tipicos de los qe va a preguntar*********
+select department_name ,avg(salary) as "media"
+from employees join departments using (department_id)
+group by department_name 
+order by department_name 
+limit 1;
+
+
 
