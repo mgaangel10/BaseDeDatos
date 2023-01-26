@@ -121,3 +121,28 @@ limit 1;
 
 
 
+----------------------------------------10:56 26/01/2023--------------------------------------------
+
+*CORRECCION DE DEL EJERCICO 1*
+
+
+-- 4 select street_address,count(employee_id) as"num"
+from employees right join departments using (department_id)
+left join locations using (location_id)
+group by street_address;
+
+--5
+select salary,count(*)
+from employees
+ group by salary 
+order by count(*) desc 
+limit 1;
+
+select salary,count(*)
+from employees 
+group salary
+having count(*)
+NO TERMINADO ....
+
+
+
