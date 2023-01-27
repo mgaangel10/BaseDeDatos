@@ -150,3 +150,115 @@ NO TERMINADO ....
 =======
 1
 >>>>>>> a5608e349f16b0181ebcbae911a14b6b6f9f5719
+mgangel — ayer a las 21:07
+
+
+
+---------------------------------------9:11 27/01/2023-----------------------------------------
+
+
+
+
+--1
+select count(order_id)as "ha",employee_id
+from employees join orders using (employee_id)
+group by employee_id
+having count(order_id) between 100 and 150; 
+--2
+select company_name 
+from orders join shippers on (order_id=shipper_id)
+
+group by shipper_id;
+--3
+select max(numval)
+from(select category_id, (category_name) as "numval"
+from categories
+group by category_name,category_id)d;
+--4
+select o.unit_price+25
+from order_details o join products pr on(o.order_id=pr.product_id)
+join categories using (product_id)
+group by category_id,product_id;
+
+--5
+select customer_id,order_id
+from orders join customers cu using (customer_id)
+where company_name = 'United Package'
+group by order_id;
+
+**CORRECCION DE EJERCICIO 1**
+
+1.6:Seleccionar el número de empleados que empezaron a 
+trabajar cada año, ordenando la salida por el año
+
+seect to_char(hire_date,yyyy)as "año",count(*)
+from employees
+group by año 
+order by año;
+
+**CORRECION DEL EJERCICIO 2**
+
+
+
+--seleccionar aquellos empleados que cobran menos que el empleado 145
+select fisrt_name,last_name ,salary
+from employees
+where salary <(select salary
+		from employees
+		where employee_id=145);
+No hay que ponerle alias .Solo a las subsconsultas del from 
+todas las subconsultas que tenga un <,>.<=... como esta ultima siempre tienen que devolver un unico valor
+ 
+--seleccionar los datos de aqulos empleados que cobre lo mismo 
+--y esten en los mismo departamentos
+
+select employee_id, fisrt_name,last_name ,salary
+from employees
+where (salary,department_id)= (select salary
+		from employees
+		where employee_id=101);
+
+--selciionar los datos de aquellos empleados que 
+--cobren mas que los empleados del departmento de Administyracion
+select *
+from employees join departments using(department_id)
+where salary > all(select salary
+		from employees join departments using (department_id)
+		where department_name = 'Purchasing';
+
+--selecionar los datos de aqullos empleados que cobren 
+--mas que la media de salarios de los empeados 
+--del departmento de Purchasing
+
+select * 
+from employees 
+where salary > (select avg(salary)
+				  from employees join departments using (department_id)
+				  where department_name= 'Purchasing');
+
+--seleccionar los empleados que tienen los mismos 
+--salarios que los empleados del departamento
+--de purchasing
+
+select * 
+from employees 
+where salary  in (select avg(salary)
+				  from employees join departments using (department_id)
+				  where department_name= 'Purchasing');
+**EL IN ES MUY IMPORTANTE **
+
+2.5:Selecciona aquellos clientes (CUSTOMERS) para los que todos los envíos que 
+ha recibido (sí, todos) los haya transportado (SHIPPERS) la empresa United Package.
+
+LO CORREGIMOS DESPUE DEL FINDE 
+
+
+--seleccionar aquellos departamentgos donde TODOS los empleados se contraron en el año 1994
+select department_id
+from employees join departments using (departments_id)
+where employee_id not in(select employee_id
+					from employees join departments using (department_id)
+					where extraxct(year from hire_date)!=1994);
+
+
+
