@@ -286,6 +286,7 @@ having max(salary) in (select distinct max (salary) as "maxi"
 					   order by maxi desc
 					   limit 5
 					  );
+algunas subconsultas
 
 
 
