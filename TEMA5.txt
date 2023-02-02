@@ -260,5 +260,32 @@ where employee_id not in(select employee_id
 					from employees join departments using (department_id)
 					where extraxct(year from hire_date)!=1994);
 
+-------------------------------------------10:12 02/02/2023--------------------------------------
+
+SUBCONSULTAS CORELACIONADAS
+
+--los 5 empleados que mas cobran
+select *
+from employees
+where salary in(select distinct salary
+			   from employees
+			   order by salary desc
+			   limit 5);
+
+--seleccionar los departamentos 
+--con los empleados con salarios 
+--mas altos. Debe aparecer el nombre del
+--departamento y los 5 salario mas alto de dicho 
+--departamento
+select department_name,max (salary) as "maxi"
+from employees join departments using (department_id)
+group by department_name
+having max(salary) in (select distinct max (salary) as "maxi" 
+					   from employees join departments using (department_id)
+					   group by department_name
+					   order by maxi desc
+					   limit 5
+					  );
+
 
 
