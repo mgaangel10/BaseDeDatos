@@ -288,5 +288,44 @@ having max(salary) in (select distinct max (salary) as "maxi"
 					  );
 algunas subconsultas
 
+-------------------9:39 03/02/2023----------------------------
+**SUBCONSULTAS CORELACIONADAS**
+
+
+--selecionar mostrando la provincia ,estacion y temperatura maxima
+--mas alta de cada provincia
+--para el mes de enero de 2019
+select provincia,estacion,temperatura_maxima
+from climatologia cli
+where to_char(fecha,  'MM/YYYY')= '01/2019'
+and temperatura_maxima >= all(SELECT temperatura_maxima
+						   from climatologia cli2
+							  where to_char(fecha,  'MM/YYYY')= '01/2019'
+						   and cli2.provincia=cli.provincia );
+
+--selecionar mostrando la provincia ,estacion y temperatura minima
+--mas alta de cada provincia
+--para el mes de enero de 2019
+select provincia,estacion,temperatura_minima
+from climatologia cli
+where to_char(fecha,  'MM/YYYY')= '01/2019'
+and temperatura_minima <= all(SELECT temperatura_minima
+						   from climatologia cli2
+							  where to_char(fecha,  'MM/YYYY')= '01/2019'
+						   and cli2.provincia=cli.provincia );
+
+--seleccionar el nombre del departamento
+--el nombre completo del empleado y su salario 
+-- para el empleado que cobra mas de cada 
+--departamento
+<<<Yo solito:)>>>
+select department_name,first_name,last_name,salary
+from employees  join departments e1 using (department_id)
+where salary >= all(select salary
+				   from employees  join departments e2 using (department_id)
+				   where e1.department_name=e2.department_name);
+
+
+
 
 
