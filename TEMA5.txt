@@ -318,7 +318,7 @@ and temperatura_minima <= all(SELECT temperatura_minima
 --el nombre completo del empleado y su salario 
 -- para el empleado que cobra mas de cada 
 --departamento
-<<<Yo solito:)>>>
+<<<Yo solito:)>>>	
 select department_name,first_name,last_name,salary
 from employees  join departments e1 using (department_id)
 where salary >= all(select salary
