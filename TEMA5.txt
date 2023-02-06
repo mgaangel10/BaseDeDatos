@@ -325,6 +325,55 @@ where salary >= all(select salary
 				   from employees  join departments e2 using (department_id)
 				   where e1.department_name=e2.department_name);
 
+-------------------------------12:52 06/02/2023------------------------------------
+ cunado en el enuncion poner TODOS
+hay que poner todos - la condicion inversa ,es decir , not in
+
+
+BOLETIN  2 *
+___________*
+--ejercicio 3
+selct customers.*
+from customers join orders using (customer_id)
+where customer_id not in (select distinct customer_id
+from orders join shippeers s on (shipper_id =ship_via)
+where company_name is not 'united packed');
+
+BOLETIN 3  *
+___________*
+--ejercicio 1
+select nombre, count(id_reserva) "trafico"
+from vuelo join reserva using (id_vuelo)
+join aeropuerto on (hasta=id_aeropuerto)
+where extract (month from llegada ) in (1,2,3)
+group by nombre
+order by trafico 
+limt 3;
+
+--ejercicio 4
+select salida.nombre, llegada.nombre
+age(vuelo.llegada,vuelo.salida)
+from vuelo join aeropuerto salida on (vuelo.salida= salida.id_aeropuerto)
+join aeropuerto llegada on (vuelo.llegada=llegada.id_aeropuerto)
+where id_vuelo in(select id_vuelo
+from vuelo
+order by age(llegada,salida)
+limit 10);
+
+***como saber la duracion de un vuelo***
+select id_vuelo
+from vuelo
+order by age(llegada,salida)
+limit 10;
+
+--ejercicio 2
+select 
+from cliente join operacion using (id_cliente)
+join inmueble using (id_inmueble)
+join tipo on (id_tipo=tipo_inmueble)
+where precio_final >= all (select max (precio_final)
+
+
 
 
 
