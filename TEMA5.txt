@@ -373,6 +373,19 @@ join inmueble using (id_inmueble)
 join tipo on (id_tipo=tipo_inmueble)
 where precio_final >= all (select max (precio_final)
 
+----------------------------------13:37 08/02/2023----------------------------------------
+
+CORRECCION DEL EJERCICIO 4
+4.1
+select *, to_char(salida, 'ID'), max(age(llega,salida))
+from vuelo join aeropuerto d on (d.id_aeropuerto = vuelo.desde)
+join aeropuerto h on (h.id_aeropuerto = vuelo.hasta)
+group by to_char (salida, 'ID');
+
+--- OTRA FORMA 
+select d.ciudad, h.ciudad,salida,llegada
+
+
 
 
 
