@@ -389,5 +389,82 @@ select d.ciudad, h.ciudad,salida,llegada
 
 
 
+**EXAMEN**
+--1
+select co.nombre,co.id_cliente
+from comprador co join operacion using (id_cliente)
+join inmueble using (id_inmueble)
+where (provincia = 'Almería'
+or provincia = 'Granada'); 
+--2
+select v1.nombre,sum(precio_final)
+from operacion join inmueble using (id_inmueble)
+join vendedor v1 using (id_vendedor)
+where precio_final >= all(select precio_final
+						 from vendedor v2 join operacion using (id_vendedor)
+						  join inmueble using (id_inmueble)
+						 where v1.id_vendedor=v2.id_vendedor 
+						 and tipo_operacion = 'Alquiler')
+and tipo_operacion = 'Alquiler'
+group by v1.nombre;
+
+--3
+select *
+from inmueble join operacion using (id_inmueble)
+where precio_final < all(select avg(precio_final)
+						from inmueble join operacion using (id_inmueble)
+						where tipo_operacion = 'Venta'
+						)
+and tipo_operacion = 'Venta';
+--5
+select avg(precio) as"pre",(precio*superficie), extract(month from fecha_alta ) as"mes",
+extract (year from fecha_alta) as "ye"
+from inmueble
+where tipo_operacion = 'Alquiler'
+group by mes,ye,precio,superficie ;
+--4
+with ganancias_por_alquileres AS(select precio_final
+from inmueble i3 join operacion using (id_inmueble)
+where tipo_operacion = 'Alquiler'
+group by precio_final
+), ganancias_por_ventas AS(select precio_final
+						    from inmueble i1 join operacion using (id_inmueble)
+						   where tipo_operacion = 'Venta'
+						   group by precio_final
+)
+select *
+from ganancias_por_ventas,ganancias_por_alquileres;
+
+***********************************************************************
+*****************************TEMA 6************************************
+***********************************************************************
+			****************
+			   **********
+			      ****
+				*
+**DIFERENCIAS ENTRE POSTGRESSQL,MYSQL Y ORACLE**
+
+-->POSTGRESAQL
+	*Objeto relacional
+	*Open source
+	*pg pl sql
+
+-->ORACLE
+	*Comercial
+	*Seguridad
+	*pl sql
+
+-->MYSQL
+	*Mixta
+	*Diferentes motores de datos
+*************************************************
+
+-Se diferencia: Matrices en SQL
+
+-Se parecen: Sebdr>SQL, extension procedural
+
+-Conclusiones:
+
+
 
 
