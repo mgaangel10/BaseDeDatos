@@ -465,6 +465,77 @@ from ganancias_por_ventas,ganancias_por_alquileres;
 
 -Conclusiones:
 
+-----------------------------------12:12 20/02/2023-------------------------------
+*****CREACION DE BASE DE DATOS (TABLAS)************
+***************************************************
+	drop table if exists my_first_table;
+	drop table if exists productos;
+	drop table if exists categorias;
+	drop table if exists alumno;
+
+	CREATE TABLE my_first_table(
+		first_column		text,
+		second_colum		integer
+	);
+	create table productos(
+		num_producto		serial,
+		nombre				text,
+		precio				numeric default 9.99,
+		fecha_creacion		TIMESTAMP default CURRENT_TIMESTAMP,
+		descuento 			numeric default 0,
+		precio_desc 		numeric GENERATED always as(precio *(1-descuento)) stored
+		
+	);
+	create table categorias(
+		cod_categoria		smallserial,
+		nombre				text
+	);
+	create table alumno(
+		num_alumno			smallserial,
+		horas 				integer default 6,
+		nombre				VARCHAR(100),
+		apellidos			VARCHAR(200),
+		num_asignatura		smallint,
+		nota_media			numeric default 5.5,
+		fecha_nacimineto	date,
+		fecha_matricula		date,
+		edad				int2
+	);
+	
+	CREATE table televisor(
+		diagonal_in 		numeric,
+		diagonal_pul		numeric generated always as (diagonal_in * 2.54) stored
+	);
+
+	insert INTO
+		productos (nombre,precio)
+	VALUES('PC',499.9);
+	insert INTO
+		productos (nombre)
+	VALUES('auricular');
+	insert INTO
+		productos (nombre,precio)
+	VALUES('raton',default);
+	insert INTO
+		alumno(nombre,apellidos)
+		values('angel','perez');
+	insert INTO
+		alumno(nombre,apellidos)
+		values('pepe','gomez');
+	insert INTO
+		alumno(nombre,apellidos)
+		values('pablo','martinez');
+	insert INTO
+		alumno(nombre,apellidos)
+		values('jaime','mora');
+	insert INTO
+		productos(nombre,precio,descuento)
+		values('jaime',10,5);
+
+
+	select *
+	from productos;
+
 
 
 
