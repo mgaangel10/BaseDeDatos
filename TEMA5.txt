@@ -1,3 +1,99 @@
+DROP TABLE IF EXISTS empresas CASCADE;
+DROP TABLE IF EXISTS alumno CASCADE;
+DROP TABLE IF EXISTS alumno_asisten CASCADE;
+DROP TABLE IF EXISTS curso CASCADE;
+DROP TABLE IF EXISTS profesor CASCADE;
+DROP TABLE IF EXISTS tipo_curso CASCADE;
+
+CREATE TABLE empresas(
+	cif		text not null,
+	nombre	text,
+	direccion	text,
+	telefono	numeric,
+
+	CONSTRAINT pk_empresa PRIMARY KEY (cif),
+	constraint telefonp_mayor check (telefono > 0)
+);
+CREATE TABLE alumno(
+	dni 			text,
+	nombre	text,
+	direccion	text,
+	telefono	numeric,
+	edad 		numeric,
+	empresa	text,
+	
+	CONSTRAINT pk_alumno PRIMARY KEY (dni),
+	constraint tel_mayot check (telefono > 0),
+	constraint eda_mayot check (edad > 0)
+);
+CREATE TABLE alumno_asisten(
+	dni 			text,
+	n_concreto		int,
+	
+	CONSTRAINT pk_alumnoasiten PRIMARY KEY (dni,n_concreto)
+	
+);
+CREATE TABLE curso(
+	n_concreto	int,
+	fecha_inicio	date,
+	fecha_fin	date,
+	dni_profesor	text,
+	tipo_curso	int,
+	constraint pk_curso	primary key(n_concreto)
+);
+CREATE TABLE profesor(
+	dni		text,
+	nombre	text,
+	apellido	text,
+	telefono	numeric,
+	direccion	text,
+	constraint pk_profesor primary key (dni),
+	constraint telefon_no check (telefono > 0)
+);
+CREATE TABLE tipo_curso(
+	cod_curso	int,
+	duracion	int,
+	programa	text ,
+	titulo		int,
+	constraint pk_tipocurso primary key (cod_curso),
+	constraint titulo_nonull check (titulo > 0)
+);
+alter table alumno
+add constraint fk_empresa foreign key (empresa)
+references empresas;
+
+alter table alumno_asisten
+add constraint fk_dnni foreign key(dni)
+references alumno on delete cascade;
+
+alter table alumno_asisten
+add constraint fk_nconcreto foreign key(n_concreto)
+references curso;
+
+alter table curso
+add constraint fk_dniprofe foreign key (dni_profesor)
+references profesor;
+
+alter table curso 
+add constraint fk_codcurso foreign key (tipo_curso)
+references tipo_curso;
+
+---ejemplo de modificacion de tablas
+
+alter table alumno add column descripcion text;
+alter table tipo_curso add column descripcion text check ( descripcion != 'hola');
+alter table alumno drop column descripcion;
+alter table curso alter column fecha_fin type date using fecha_fin::timestamp;
+alter table alumno_asisten rename column n_concreto to num_concreto;
+alter table alumno_asisten rename to asistencia_alumno;
+insert into profesor values ('123b','angel','sevilla',123456,'LLO');
+update profesor set telefono = 12 where telefono = 123456;
+delete from profesor where direccion = 'LLO';
+create table users (firstname text,lastname text, id serial primary key);
+insert into users (firstname,lastname) values ('Joe','Cool') Returning
+id;
+
+
 13:15 25/01/2023
 
 --seleccionar el numero de empleados que trabaja en cada pais 
