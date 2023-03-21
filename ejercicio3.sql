@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS vehiculo CASCADE;
-DROP TABLE IF EXISTS lineaventa CASCADE;
-DROP TABLE IF EXISTS coche CASCADE;
-DROP TABLE IF EXISTS motocicleta CASCADE;
-DROP TABLE IF EXISTS venta CASCADE;
-DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS vehiculo ;
+DROP TABLE IF EXISTS lineaventa ;
+DROP TABLE IF EXISTS coche ;
+DROP TABLE IF EXISTS motocicleta ;
+DROP TABLE IF EXISTS venta ;
+DROP TABLE IF EXISTS cliente ;
 
 create table vehiculo (
 numBastidor	numeric not null,
